@@ -1,0 +1,69 @@
+{
+    "descriptions": [
+        {
+            "dataType": "anat",
+            "modalityLabel": "T1w",
+            "criteria": {
+                "SeriesDescription": "*_RMS",
+                "ImageType": ["ORIGINAL", "PRIMARY", "OTHER", "ND", "NORM", "MEAN"]
+            }
+        },
+        {
+            "dataType": "func",
+            "modalityLabel": "bold",
+            "customLabels": "task-nback",
+            "criteria": {
+                "SeriesDescription": "Head_fMRI_mb2p2_NBack1"
+            }
+        },
+        {
+            "dataType": "func",
+            "modalityLabel": "bold",
+            "customLabels": "task-nback",
+            "criteria": {
+                "SeriesDescription": "Head_fMRI_mb2p2_NBack2"
+            }
+        },
+        {
+            "dataType": "func",
+            "modalityLabel": "bold",
+            "customLabels": "task-encoding",
+            "criteria": {
+                "SeriesDescription": "Head_fMRI_mb2p2_encoding1"
+            }
+        },
+        {
+            "dataType": "func",
+            "modalityLabel": "bold",
+            "customLabels": "task-encoding",
+            "criteria": {
+                "SeriesDescription": "Head_fMRI_mb2p2_encoding2"
+            }
+        },
+        {
+            "dataType": "func",
+            "modalityLabel": "bold",
+            "customLabels": "task-recognition",
+            "criteria": {
+                "SeriesDescription": "Head_fMRI_mb2p2_recognition"
+            }
+        },
+        {
+            "dataType": "func",
+            "modalityLabel": "bold",
+            "customLabels": "task-emo",
+            "criteria": {
+                "SeriesDescription": "33-Head_fMRI_mb2p2_ImpEmoProc1"
+            }
+        },
+        {
+            "dataType": "func",
+            "modalityLabel": "bold",
+            "customLabels": "task-emo",
+            "criteria": {
+                "SeriesDescription": "33-Head_fMRI_mb2p2_ImpEmoProc2"
+            }
+        }
+
+    ]
+}
