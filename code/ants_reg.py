@@ -6,7 +6,7 @@ import sys
 HELP_DOC ="""""
     Cli wrapper for ants.py nonlinear SyNRA registration for PET 
     args: 1. target image, 2. image to be moved, 3. image to be moved with, 4. outputdir
-    example: ./ants_reg.py MNI152template.nii.gz T1w.nii.gz PET_in_anat.nii.gz /path/to/output 
+    example: python ants_reg.py MNI152template.nii.gz T1w.nii.gz dyn_PET_in_anat.nii.gz /path/to/output 
 """
 
 # Argument parser (allowing the registration script to be called from main preprocessing script, with 'subj' as argument)
@@ -14,9 +14,9 @@ if '-h' in sys.argv or '--help' in sys.argv or len(sys.argv)<2:
     print(HELP_DOC)
     sys.exit(0)
 
-target = sys.argv[1]
-mov = sys.argv[2]
-movwith = sys.argv[3]
+target = sys.argv[1] # template 
+mov = sys.argv[2] # T1 
+movwith = sys.argv[3] # pet 
 if len(sys.argv) < 5:
     outputdir = os.getwd()
 else:
@@ -41,12 +41,13 @@ TRANSFORMS = ants.registration(
 PET_in_MNI = ants.apply_transforms(
 	fixed = nlin6,
 	moving = PETscan,
+	imagetype=3,
 	transformlist=TRANSFORMS['fwdtransforms'],
 	interpolator=f'{interpolation}',
 	verbose = True
 )
 
-MNI_projection = f'{outputdir}/SUVR-in-MNI-2mm__{transform_type}_{interpolation}.nii.gz'
+MNI_projection = f'{outputdir}/dyn_pet_MNI_2mm_{transform_type}_{interpolation}.nii.gz'
 
 ### Save the PET data in MNI
 ants.image_write(PET_in_MNI, MNI_projection)
@@ -62,7 +63,7 @@ for idx, transform in enumerate(TRANSFORMS['fwdtransforms']):
 
 ## Non-linear
 warp_transform = TRANSFORMS['fwdtransforms'][0]
-warp_destination = f'{ouputdir}/forward_warp_SyNRA.nii.gz'
+warp_destination = f'{outputdir}/forward_warp_SyNRA.nii.gz'
 ## Save non-linear transforms
 shutil.move(warp_transform, warp_destination)
 

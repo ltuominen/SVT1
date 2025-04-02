@@ -5,8 +5,10 @@ pet_dir="$(dirname $pet_fullpath)"
 pet_file="$(basename $pet_fullpath)"
 
 # motion correct 
-mcflirt -in ${pet_dir}/${pet_file} -refvol 0 -out ${pet_dir}/mc_${pet_file} # out = mc_pet.nii.gz
- mri_concat ${pet_dir}/mc_${pet_file} --sum --o ${pet_dir}/sum_mc_${pet_file} # out = sum_mc_p1.nii.gz
+mcflirt -in ${pet_dir}/${pet_file} -meanvol -out ${pet_dir}/mc_${pet_file} # out = mc_pet.nii.gz
+
+# sum
+mri_concat ${pet_dir}/mc_${pet_file} --sum --o ${pet_dir}/sum_mc_${pet_file} # out = sum_mc_p1.nii.gz
 
 # coregister to T1w 
 mri_coreg --s ${subject} --targ ${SUBJECTS_DIR}/${subject}/mri/brain.mgz --no-ref-mask \
@@ -19,12 +21,15 @@ mri_vol2vol --reg ${pet_dir}/p2mri.reg.lta --mov ${pet_dir}/mc_${pet_file} --fst
 mri_vol2vol --reg ${pet_dir}/p2mri.reg.lta --mov ${pet_dir}/sum_mc_${pet_file} --fstarg --o ${pet_dir}/in_anat-sum_mc_${pet_file} 
 
 # create a white matter ROI ("centrum semiovale") for reference
-python create_cs_roi.py ${subject}
+/usr/local/fsl/bin/python3.11 create_cs_roi.py ${subject}
 
+# register to MNI152
+/usr/local/fsl/bin/python3.11 ants_reg.py $FSL_DIR/data/standard/MNI152_T1_2mm_brain.nii.gz ${SUBJECTS_DIR}/${subject}/mri/brain.mgz ${pet_dir}/in_anat-mc_${pet_file} ${pet_dir}
 
-# these are for testing 
-pet_dir=/home/lauri/Documents/SVT1/test_subject
-pet_file=pet.nii.gz
+# smooth
+for s in 6 8 10; do
+	mri_fwhm --fwhm ${s} --smooth-only --i ${pet_dir}/dyn_pet_MNI_2mm_SyNRA_linear.nii.gz --o ${pet_dir}/dyn_pet_MNI_2mm_SyNRA_linear_sm${s}.nii.gz
+done 
 
 # run the mri_gtmpv to get high binding nii.gz 
 mri_gtmpvc --i ${pet_dir}/mc_${pet_file} --reg ${pet_dir}/p2mri.reg.lta --seg gtmseg.mgz \
@@ -42,4 +47,6 @@ mri_glmfit --y ${pet_dir}/gtmpvc_hb.output/km.hb.tac.nii.gz --mrtm1 ${pet_dir}/r
 k2p=$(cat ${pet_dir}/mrtm1/k2prime.dat)
 
 # fit MRTM2 
-mri_glmfit --y gtm.nii.gz --mrtm2 ${pet_dir}/ref.km.txt /home/lauri/Documents/SVT1/info/time.dat $k2p --o ${pet_dir}/mrtm2 --no-est-fwhm --nii.gz
+for s in 6 8 10; do
+	mri_glmfit --y ${pet_dir}/dyn_pet_MNI_2mm_SyNRA_linear_sm${s}.nii.gz --mrtm2 ${pet_dir}/ref.km.txt /home/lauri/Documents/SVT1/info/time.dat $k2p --o ${pet_dir}/mrtm2_sm${s} --no-est-fwhm --nii.gz
+done 
