@@ -24,8 +24,9 @@ Contains all code to analyze a SynVesT1 scan
 
 figures stored here 
 
-+[BPND in MNI152](figures/test_subject_bpnd_mni152.png)
-+[PET motion QC](figures/test_subject_framewise_motion_pet.png)
+[BPND in MNI152](figures/test_subject_bpnd_mni152.png)
+
+[PET motion QC](figures/test_subject_framewise_motion_pet.png)
 ## info 
 
 info for analysis 
