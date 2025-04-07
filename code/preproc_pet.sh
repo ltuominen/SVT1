@@ -1,6 +1,7 @@
 
-pet_fullpath=$1
-subject=$2
+subject=$1
+pet_fullpath=$2
+
 pet_dir="$(dirname $pet_fullpath)"
 pet_file="$(basename $pet_fullpath)"
 
