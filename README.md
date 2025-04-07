@@ -6,7 +6,7 @@ This is a repository for the code for a project on SynVesT1
 
 Contains all code to analyze a SynVesT1 scan 
 
-[preprocess_SynVesT1/ipynb](code/preprocess_SynVesT1.ipynb) is a high level example of how to run the code 
+[preprocess_SynVesT1.ipynb](code/preprocess_SynVesT1.ipynb) is a high level example of how to run the code 
 
 [do_recon_all.sh](code/do_recon_all.sh) does recon-all and gtmseg and needs to be run first 
 
@@ -23,4 +23,10 @@ Contains all code to analyze a SynVesT1 scan
 ## figures 
 
 figures stored here 
+
++[BPND in MNI152](figures/test_subject_bpnd_mni152.png)
+
+## info 
+
+info for analysis 
 
