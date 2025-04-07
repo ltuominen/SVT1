@@ -18,6 +18,8 @@ Contains all code to analyze a SynVesT1 scan
 
 [calculate_time.dat.ipynb](code/calculate_time.dat.ipynb) calculates mean of each time frame
 
+[QC.ipynb](code/QC.ipynb) run and plot motion 
+
 [compare_svt1_ucbj.ipynb](code/compare_svt1_ucbj.ipynb) compares the scan to a normative map of SV2A
 
 ## figures 
